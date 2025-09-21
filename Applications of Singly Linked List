@@ -1,0 +1,225 @@
+//a) Count nodes & Search an element
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+struct Node* head = NULL;
+
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->next = NULL;
+    return newNode;
+}
+
+void insertAtEnd(int data) {
+    struct Node* newNode = createNode(data);
+    if (head == NULL) {
+        head = newNode;
+        return;
+    }
+    struct Node* temp = head;
+    while (temp->next != NULL) temp = temp->next;
+    temp->next = newNode;
+}
+
+int countNodes() {
+    int count = 0;
+    struct Node* temp = head;
+    while (temp != NULL) {
+        count++;
+        temp = temp->next;
+    }
+    return count;
+}
+
+int search(int key) {
+    struct Node* temp = head;
+    int pos = 1;
+    while (temp != NULL) {
+        if (temp->data == key) return pos;
+        temp = temp->next;
+        pos++;
+    }
+    return -1;
+}
+
+int main() {
+    insertAtEnd(10);
+    insertAtEnd(20);
+    insertAtEnd(30);
+    insertAtEnd(40);
+
+    printf("Total nodes = %d\n", countNodes());
+
+    int key = 30;
+    int pos = search(key);
+    if (pos != -1) printf("Element %d found at position %d\n", key, pos);
+    else printf("Element %d not found\n", key);
+
+    return 0;
+}
+
+
+// //b) Reverse a list and find middle node
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+struct Node* head = NULL;
+
+void insertAtEnd(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->next = NULL;
+    if (head == NULL) {
+        head = newNode;
+        return;
+    }
+    struct Node* temp = head;
+    while (temp->next != NULL) temp = temp->next;
+    temp->next = newNode;
+}
+
+void display() {
+    struct Node* temp = head;
+    while (temp != NULL) {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    }
+    printf("NULL\n");
+}
+
+void reverseList() {
+    struct Node* prev = NULL;
+    struct Node* curr = head;
+    struct Node* next = NULL;
+    while (curr != NULL) {
+        next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
+    }
+    head = prev;
+}
+
+void findMiddle() {
+    if (head == NULL) return;
+    struct Node* slow = head;
+    struct Node* fast = head;
+    while (fast != NULL && fast->next != NULL) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    printf("Middle node is: %d\n", slow->data);
+}
+
+int main() {
+    insertAtEnd(10);
+    insertAtEnd(20);
+    insertAtEnd(30);
+    insertAtEnd(40);
+    insertAtEnd(50);
+
+    printf("Original list:\n");
+    display();
+
+    reverseList();
+    printf("Reversed list:\n");
+    display();
+
+    findMiddle();
+
+    return 0;
+}
+
+// c) Sort list & Delete duplicates
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+struct Node* head = NULL;
+
+void insertAtEnd(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->next = NULL;
+    if (head == NULL) {
+        head = newNode;
+        return;
+    }
+    struct Node* temp = head;
+    while (temp->next != NULL) temp = temp->next;
+    temp->next = newNode;
+}
+
+void display() {
+    struct Node* temp = head;
+    while (temp != NULL) {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    }
+    printf("NULL\n");
+}
+
+void sortList() {
+    struct Node* i;
+    struct Node* j;
+    int temp;
+    for (i = head; i != NULL; i = i->next) {
+        for (j = i->next; j != NULL; j = j->next) {
+            if (i->data > j->data) {
+                temp = i->data;
+                i->data = j->data;
+                j->data = temp;
+            }
+        }
+    }
+}
+
+void deleteDuplicates() {
+    struct Node* temp = head;
+    while (temp != NULL && temp->next != NULL) {
+        if (temp->data == temp->next->data) {
+            struct Node* dup = temp->next;
+            temp->next = dup->next;
+            free(dup);
+        } else {
+            temp = temp->next;
+        }
+    }
+}
+
+int main() {
+    insertAtEnd(40);
+    insertAtEnd(20);
+    insertAtEnd(30);
+    insertAtEnd(20);
+    insertAtEnd(40);
+    insertAtEnd(10);
+
+    printf("Original list:\n");
+    display();
+
+    sortList();
+    printf("Sorted list:\n");
+    display();
+
+    deleteDuplicates();
+    printf("List after deleting duplicates:\n");
+    display();
+
+    return 0;
+}
